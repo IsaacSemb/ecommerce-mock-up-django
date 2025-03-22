@@ -87,7 +87,12 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
-    pass
+    quantity = models.IntegerField(verbose_name="Quantity of Items")
+    created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
+    
+    # cart fk (from which cart)
+    # what product (fk)
+    # price at time -- pricess keep change
 
 
 
