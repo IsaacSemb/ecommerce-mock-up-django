@@ -4,3 +4,6 @@
 # cache files
 __pycache__
 *.pyc
+
+# personal files
+commit_msg.txt
