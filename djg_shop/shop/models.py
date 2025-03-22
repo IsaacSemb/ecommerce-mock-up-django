@@ -108,6 +108,12 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    pass
+    unit_price = models.DecimalField(verbose_name="Unit Price", max_digits=6, decimal_places=2)
+    quantity = models.IntegerField(verbose_name="Quantity of Items")
+    created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
+    
+    # from what order id
+    #  what product id
+
 
 
