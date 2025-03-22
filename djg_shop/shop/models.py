@@ -46,7 +46,11 @@ class Customer(models.Model):
 
 
 class Category(models.Model):
-    pass
+    category_name = models.CharField( verbose_name="category name", max_length=255)
+    category_description = models.TextField(verbose_name="Category Description") 
+    
+    # slug ??
+    
 
 
 
