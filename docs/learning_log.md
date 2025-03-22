@@ -19,3 +19,10 @@ Let’s say you have a product named:
 Its slug might be:
 
     mens-black-leather-jacket
+
+
+### git commit -F \<filename\>
+commiting using file name
+
+### verbose name
+human readable name 
