@@ -21,14 +21,27 @@ class Product(models.Model):
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     last_update = models.DateTimeField(verbose_name="date and time updated", auto_now=True)
     
-    
+    # category
+    # slug
 
 
+notes_product = """
 
+- you can null a field with the null parameter
+- you can make a field unique
 
+"""
 
 class Customer(models.Model):
-    pass
+    first_name = models.CharField(verbose_name="First Name", max_length=255) 
+    last_name = models.CharField(verbose_name="Last Name", max_length=255) 
+    phone = models.CharField(verbose_name="Phone Number", max_length=20)
+    email = models.EmailField(verbose_name='Customer Email Address', max_length=255, unique=True)
+    date_of_birth = models.DateField(verbose_name="Date of Birth", null=True)
+    created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
+    
+    # address
+    # membership
 
 
 
