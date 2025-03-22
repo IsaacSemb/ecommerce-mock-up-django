@@ -1,0 +1,149 @@
+
+1. Product Inventory
+   - quantity  
+   - last updated (???)
+
+2. Product
+   - product_id (pk)  
+   - category (fk?)  
+   - inventory (fk?)  
+   - name  
+   - slug  
+   - description  
+   - price  
+   - createdAt (???)
+
+3. Customer
+   - customer_id (pk)  
+   - name  
+   - phone (???)  
+   - address (???)  
+   - membership (???)  
+   - date added
+
+4. Order
+   - order_id (pk)  
+   - user (fk?)  
+   - cart (fk?)  
+   - status  
+   - total amount
+
+5. Order Item
+   - order_item_id (pk)  
+   - product (fk)  
+   - quantity  
+   - price  
+   - date added
+
+6. Category
+   - category_id (pk)  
+   - name  
+   - category description
+
+7. Cart
+   - cart_id (pk)  
+   - user (fk?)  
+   - createdAt
+
+8. Cart Item 
+   - cart_item_id (pk)  
+   - product (fk?)  
+   - quantity  
+   - date added
+
+
+Product Inventory  
+    do we need to separate this into a foreign key really
+
+    answer:
+    ✅ Production systems often separate it, especially if:
+    You're doing concurrent stock updates (multiple buyers, background jobs).
+    You want audit logs or track inventory over time.
+    ⚠️ MVP tip: Keep it in the Product model.
+        Simpler.
+        Easier CRUD.
+        You won’t deal with update race conditions until you have concurrent access.
+
+    qtn:
+        inventory changes are dangerous cause if traffic is alot then risk of overwhelm 
+        how do we find  middle ground ( to not order things out of stock )
+    answer:
+        That’s concurrency + transaction management:
+        Use F() expressions or database locks to atomically check & update inventory.
+        Or prevent purchase if inventory < requested_quantity.
+        You’ll explore this deeper when you hit Django's select_for_update() and ACID concepts.
+
+    extra:
+        but also it helps us get the ones with the biggest rates of change 
+        hence the most bought items 
+        ( i think there are better metrics that tell this )
+
+Product 
+    what do you mean last updated 
+    this makes putting inventory raw here make more sense
+
+    answer:
+        That’s usually:
+        A timestamp (updated_at) auto-updated on save.
+        Helps track any changes (e.g., description tweaks, image changes, stock updates).
+        ✅ MVP tip: Keep inventory in Product. Add updated_at with auto_now=True.
+
+
+    because the only thing i see that will make it worhtwhile of updating frequently
+    is the raw inventory
+    other attributes wont really change that much 
+    the closest to over changing is unit price but also not as much as inventory 
+
+    so do we still separate out inventory
+
+Customer 
+    Is it an address id for address?
+    cause then the addresses will be as many as the users which is kind of a duplcation
+    ( 1m users = 1m addresses )
+
+    Real-world apps have an Address model.
+    A User ↔ Address relationship is:
+    One-to-many (user can have multiple addresses).
+    Or many-to-many (if addresses are reusable/shared — rare for personal delivery).
+
+    
+    the upside is you can have a database of addresses already set
+    which can help in validation
+    
+    also doesnt that mean we shall need an association class to join the addresses to the users???? 
+
+Order item
+    (date added )wont this be represented by the order 
+    we assume all order items were added at the same time
+    
+    also it makes sense if some one pauses their order and completes it like 2 days later 
+    ( taking time to think about it)
+
+
+    “Is date added needed?”
+    You're thinking deeply here — well done.
+    If you assume all order items are added at once, Order.created_at is enough.
+    But if you allow delayed checkouts, or you're tracking user behavior, then yes.
+    ✅ MVP tip: Skip it. Add later if your logic demands it.
+
+Category  
+    Should I store category descriptions or just keep them simple with just a name? 
+     Also do I need a sub-category concept or a many to many relationship?”
+
+Cart Item  
+    Should I store the date the item was added to the cart? Do I need to track changes in quantity over time? Also, do I handle discount codes or coupons in the cart or somewhere else?”
+
+
+✅ Summary for Your MVP
+
+Model	    Keep Simple	              Justify	            Optional Later
+
+Product	    +inventory, updated_at	  No FK for inventory	Price history, soft deletes
+
+Customer	One address FK	          No M2M needed yet	    Address reuse, multiple
+
+CartItem	quantity only	          No history tracking	Discount codes
+
+OrderItem	Use Order timestamp	      One point of truth	Allow order resume flow
+
+Category	name, maybe desc	      Subcategories later	M2M if turning into tags
