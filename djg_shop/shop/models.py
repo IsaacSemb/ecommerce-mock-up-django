@@ -97,7 +97,13 @@ class CartItem(models.Model):
 
 
 class Order(models.Model):
-    pass
+    total_amount = models.DecimalField(verbose_name="Total Amount for Order", max_digits=6, decimal_places=2)
+    created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
+    
+    # who ordered customer fk
+    # from which cart
+    # status -- multiple choice for later
+    
 
 
 
