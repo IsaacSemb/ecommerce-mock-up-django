@@ -50,12 +50,24 @@ class Category(models.Model):
     category_description = models.TextField(verbose_name="Category Description") 
     
     # slug ??
+    # slug = models.SlugField(verbose_name="Slug", max_length=255, unique=True)
+    
+    # time stamps 
+    # created_at = models.DateTimeField(auto_now_add=True)
+    # updated_at = models.DateTimeField(auto_now=True)
+
     
 
 
 
 class Address(models.Model):
-    pass
+    street = models.CharField(verbose_name="Street Name", max_length=255)
+    city = models.CharField(verbose_name="City Name", max_length=255)
+    country = models.CharField(verbose_name="Country of Residence", max_length=255)
+    postal_code = models.CharField(verbose_name="Postal Code", max_length=20)
+    is_default = models.BooleanField(verbose_name="default address", default=False)
+    
+    # customer
 
 
 
