@@ -2,6 +2,13 @@ from django.db import models
 
 # Create your models here.
 
+# stuff to remember
+    
+    # ABSTRACT CLASSES
+    # you can create separate abstract classes for repeated attribute 
+    # for exapmle a timestamped class for time stamping 
+
+
 notes_product = """
 
 - text field doesnt need max length
@@ -72,7 +79,10 @@ class Address(models.Model):
 
 
 class Cart(models.Model):
-    pass
+    created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
+    
+    # customer fk owner
+    # 
 
 
 
