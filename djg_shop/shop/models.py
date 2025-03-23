@@ -64,7 +64,7 @@ class Customer(models.Model):
 
 class Category(models.Model):
     category_name = models.CharField( verbose_name="category name", max_length=255)
-    category_description = models.TextField(verbose_name="Category Description") 
+    category_description = models.TextField(verbose_name="Category Description", null=True) 
     
     # slug ??
     # slug = models.SlugField(verbose_name="Slug", max_length=255, unique=True)
@@ -97,28 +97,20 @@ class Address(models.Model):
     postal_code = models.CharField(verbose_name="Postal Code", max_length=20)
     is_default = models.BooleanField(verbose_name="default address", default=False)
     customer = models.ForeignKey(Customer, verbose_name="Owner of address", on_delete=models.CASCADE)
-    
-    # customer
-
 
 
 class Cart(models.Model):
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
-    customer = models.OneToOneField( Customer, verbose_name="Cart Owner", on_delete=models.CASCADE)
-    
-    # customer fk owner
-    # 
-
+    customer = models.OneToOneField( Customer, verbose_name="Cart Owner", on_delete=models.CASCADE, primary_key=True)
 
 
 class CartItem(models.Model):
-    quantity = models.IntegerField(verbose_name="Quantity of Items")
+    quantity = models.PositiveSmallIntegerField(verbose_name="Quantity of Items")
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     cart = models.ForeignKey(Cart, verbose_name="which Cart", on_delete=models.CASCADE)
     product = models.OneToOneField(Product, verbose_name="which product", on_delete=models.CASCADE)
 
     # price at time -- pricess keep change?? --- on order item
-
 
 
 class Order(models.Model):
@@ -137,7 +129,7 @@ class Order(models.Model):
     total_amount = models.DecimalField(verbose_name="Total Amount for Order", max_digits=6, decimal_places=2)
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     payment_status = models.CharField(verbose_name="payment status",max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_PENDING)
-    customer = models.ForeignKey(Customer, verbose_name="Ordered by", on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, verbose_name="Ordered by", on_delete=models.PROTECT)
     
     # from which cart ??? seems illogical
 
@@ -145,7 +137,7 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     unit_price = models.DecimalField(verbose_name="Unit Price", max_digits=6, decimal_places=2)
-    quantity = models.IntegerField(verbose_name="Quantity of Items")
+    quantity = models.PositiveSmallIntegerField(verbose_name="Quantity of Items")
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     order = models.ForeignKey( Order, verbose_name="Which Order", on_delete=models.CASCADE )
     product = models.OneToOneField( Product, verbose_name="Which product", on_delete=models.CASCADE )
