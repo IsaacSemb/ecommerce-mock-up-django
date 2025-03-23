@@ -113,10 +113,10 @@ class Cart(models.Model):
 class CartItem(models.Model):
     quantity = models.IntegerField(verbose_name="Quantity of Items")
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
-    
-    # cart fk (from which cart)
-    # what product (fk)
-    # price at time -- pricess keep change
+    cart = models.ForeignKey(Cart, verbose_name="which Cart", on_delete=models.CASCADE)
+    product = models.OneToOneField(Product, verbose_name="which product", on_delete=models.CASCADE)
+
+    # price at time -- pricess keep change?? --- on order item
 
 
 
@@ -138,7 +138,7 @@ class Order(models.Model):
     payment_status = models.CharField(verbose_name="payment status",max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_PENDING)
     customer = models.ForeignKey(Customer, verbose_name="Ordered by", on_delete=models.CASCADE)
     
-    # from which cart
+    # from which cart ??? seems illogical
 
 
 
