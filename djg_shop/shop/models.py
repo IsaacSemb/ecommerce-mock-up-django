@@ -104,6 +104,7 @@ class Address(models.Model):
 
 class Cart(models.Model):
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
+    customer = models.OneToOneField( Customer, verbose_name="Cart Owner", on_delete=models.CASCADE)
     
     # customer fk owner
     # 
