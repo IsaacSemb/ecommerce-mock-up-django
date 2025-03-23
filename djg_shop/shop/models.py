@@ -40,15 +40,24 @@ notes_product = """
 """
 
 class Customer(models.Model):
+    
+    MEMBERSHIP_BASIC = 'B'
+    MEMBERSHIP_PREMIUM = 'P'
+    
+    MEMBERSHIP_TIERS = [
+        (MEMBERSHIP_BASIC, 'Basic'),
+        (MEMBERSHIP_PREMIUM, 'Premium')
+    ]
+    
     first_name = models.CharField(verbose_name="First Name", max_length=255) 
     last_name = models.CharField(verbose_name="Last Name", max_length=255) 
     phone = models.CharField(verbose_name="Phone Number", max_length=20)
     email = models.EmailField(verbose_name='Customer Email Address', max_length=255, unique=True)
     date_of_birth = models.DateField(verbose_name="Date of Birth", null=True)
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
+    membership = models.CharField(verbose_name="Membership Tier", max_length=1, choices=MEMBERSHIP_TIERS, default='B')
     
     # address
-    # membership
 
 
 
