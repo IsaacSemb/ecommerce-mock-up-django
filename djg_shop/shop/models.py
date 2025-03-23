@@ -95,8 +95,7 @@ class Address(models.Model):
     country = models.CharField(verbose_name="Country of Residence", max_length=255)
     postal_code = models.CharField(verbose_name="Postal Code", max_length=20)
     is_default = models.BooleanField(verbose_name="default address", default=False)
-    
-    customer = models.OneToOneField(Customer, verbose_name="Owner of address", on_delete=models.CASCADE, primary_key=True)
+    customer = models.ForeignKey(Customer, verbose_name="Owner of address", on_delete=models.CASCADE)
     
     # customer
 
