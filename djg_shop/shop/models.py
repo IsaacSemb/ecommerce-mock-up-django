@@ -136,8 +136,8 @@ class Order(models.Model):
     total_amount = models.DecimalField(verbose_name="Total Amount for Order", max_digits=6, decimal_places=2)
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     payment_status = models.CharField(verbose_name="payment status",max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_PENDING)
+    customer = models.ForeignKey(Customer, verbose_name="Ordered by", on_delete=models.CASCADE)
     
-    # who ordered customer fk
     # from which cart
 
 
