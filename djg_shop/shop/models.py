@@ -147,9 +147,6 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(verbose_name="Quantity of Items")
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     order = models.ForeignKey( Order, verbose_name="Which Order", on_delete=models.CASCADE )
-    
-    # from what order id
-    #  what product id
-
+    product = models.OneToOneField( Product, verbose_name="Which product", on_delete=models.CASCADE )
 
 
