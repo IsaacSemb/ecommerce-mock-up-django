@@ -146,6 +146,7 @@ class OrderItem(models.Model):
     unit_price = models.DecimalField(verbose_name="Unit Price", max_digits=6, decimal_places=2)
     quantity = models.IntegerField(verbose_name="Quantity of Items")
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
+    order = models.ForeignKey( Order, verbose_name="Which Order", on_delete=models.CASCADE )
     
     # from what order id
     #  what product id
