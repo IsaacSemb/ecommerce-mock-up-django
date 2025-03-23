@@ -55,7 +55,7 @@ class Customer(models.Model):
     email = models.EmailField(verbose_name='Customer Email Address', max_length=255, unique=True)
     date_of_birth = models.DateField(verbose_name="Date of Birth", null=True)
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
-    membership = models.CharField(verbose_name="Membership Tier", max_length=1, choices=MEMBERSHIP_TIERS, default='B')
+    membership = models.CharField(verbose_name="Membership Tier", max_length=1, choices=MEMBERSHIP_TIERS, default=MEMBERSHIP_BASIC)
     
     # address
 
