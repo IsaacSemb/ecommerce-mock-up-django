@@ -27,6 +27,7 @@ class Product(models.Model):
     inventory = models.IntegerField(verbose_name="inventory")
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     last_update = models.DateTimeField(verbose_name="date and time updated", auto_now=True)
+    category = models.ForeignKey('Category', verbose_name="Product Category", on_delete=models.PROTECT)
     
     # category
     # slug
