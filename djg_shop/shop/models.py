@@ -75,6 +75,19 @@ class Category(models.Model):
     
 
 
+notes_address = """
+
+- for a one to one relationship, the first argument has no keyword ( not sure )
+- you can name the model direct like below
+
+- but if the model is not in the same app the you do <app.model> in our case --> 'shop.Customer'
+
+- also since python reads up to down if the child comes before the parent, we use the class name in string form
+eg --->  ( 'Customer', verbose.... )
+
+- set primary key so that there cant be 2 customers
+
+"""
 
 class Address(models.Model):
     street = models.CharField(verbose_name="Street Name", max_length=255)
@@ -82,6 +95,8 @@ class Address(models.Model):
     country = models.CharField(verbose_name="Country of Residence", max_length=255)
     postal_code = models.CharField(verbose_name="Postal Code", max_length=20)
     is_default = models.BooleanField(verbose_name="default address", default=False)
+    
+    customer = models.OneToOneField(Customer, verbose_name="Owner of address", on_delete=models.CASCADE, primary_key=True)
     
     # customer
 
