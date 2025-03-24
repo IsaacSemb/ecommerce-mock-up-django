@@ -7,3 +7,6 @@ __pycache__
 
 # personal files
 commit_msg.txt
+
+# database dummy data
+database_data
