@@ -22,7 +22,7 @@ notes_product = """
 
 class Product(models.Model):
     product_name = models.CharField(verbose_name='Product Name', max_length=255)
-    description = models.TextField(verbose_name= "Product Description")
+    product_description = models.TextField(verbose_name= "Product Description")
     unit_price = models.DecimalField(verbose_name="Unit Price", max_digits=6, decimal_places=2)
     inventory = models.IntegerField(verbose_name="inventory")
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
