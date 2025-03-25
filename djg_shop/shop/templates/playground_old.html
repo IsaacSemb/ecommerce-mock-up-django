@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Django ORM Playground Output</title>
+  </head>
+  <body>
+
+    <h1>This is my personal playground to experiment with the models</h1>
+
+
+
+
+    {% if True %}
+    <ul>
+      <h1> choosing select field : {{pdt_filter_12|length}}</h1>
+      {% for product in pdt_filter_12 %}
+      <li>{{product}} </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    {% if True %}
+    <ul>
+      <h1> choosing select field : {{pdt_filter_11|length}}</h1>
+      {% for product in pdt_filter_11 %}
+      <li>{{product}} </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if False %}
+    <ul>
+      <h1> STARTS WITH INSENSTIVE : {{pdt_filter_6|length}}</h1>
+      {% for product in pdt_filter_6 %}
+      <li>{{product.product_name | title }} {{product.unit_price }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    {% if False %}
+    <ul>
+      <h1> STARTS WITH CASE SENSTIVE : {{pdt_filter_5|length}}</h1>
+      {% for product in pdt_filter_5 %}
+      <li>{{product.product_name | title }} {{product.unit_price }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if False %}
+    <ul>
+      <h1>less than or EQUAL to 1 pound: {{pdt_filter_4|length}}</h1>
+      {% for product in pdt_filter_4 %}
+      <li>{{product.product_name | title }} {{product.unit_price }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if False %}
+    <ul>
+      <h1>less than 2 pound: {{pdt_filter_3|length}}</h1>
+      {% for product in pdt_filter_3 %}
+      <li>{{product.product_name | title }} {{product.unit_price }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    {% if False %}
+    <ul>
+      <h1>Greater than or EQUAL to 99 pounds: {{pdt_filter_1|length}}</h1>
+      {% for product in pdt_filter_2 %}
+      <li>{{product.product_name | title }} {{product.unit_price }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if False %}
+    <ul>
+      <h1>Greater than 99 pounds: {{pdt_filter_1|length}}</h1>
+      {% for product in pdt_filter_1 %}
+      <li>{{product.product_name | title }} {{product.unit_price }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    
+
+    {% if False %}
+
+    <ul>
+      <h1>Getting object by ID: {{object_by_id}}</h1>
+    </ul>
+
+    {% endif %}
+
+    {% if False %}
+    <ul>
+      <h1>Product Count: {{all_products|length}}</h1>
+      {% for product in all_products %}
+      <li>{{product.product_name | title }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+
+
+  </body>
+</html>

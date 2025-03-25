@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Playground</title>
+    <title>Django ORM Playground Output</title>
   </head>
   <body>
 
@@ -12,16 +12,14 @@
 
 
     {% if True %}
-
     <ul>
       <h1>Product Count: {{all_products|length}}</h1>
-
       {% for product in all_products %}
       <li>{{product.product_name | title }}</li>
       {% endfor %}
     </ul>
-
     {% endif %}
+
 
 
   </body>
