@@ -11,13 +11,13 @@
     <h1>This is my personal playground to experiment with the models</h1>
 
 
-    {% if False %}
+    {% if True %}
 
     <ul>
-      <h1>Book Count (displaying all books) : {{all_books|length}}</h1>
+      <h1>Product Count: {{all_products|length}}</h1>
 
-      {% for book in all_books %}
-      <li>{{book.title | title }}</li>
+      {% for product in all_products %}
+      <li>{{product.product_name | title }}</li>
       {% endfor %}
     </ul>
 
