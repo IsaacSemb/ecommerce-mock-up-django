@@ -63,7 +63,11 @@ class Customer(models.Model):
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     membership = models.CharField(verbose_name="Membership Tier", max_length=1, choices=MEMBERSHIP_TIERS, default=MEMBERSHIP_BASIC)
     
-    # address
+    def __str__(self):
+        return self.first_name + ' ' + self.last_name
+    
+    class Meta:
+        ordering = [ 'first_name', 'last_name']
 
 
 
@@ -143,6 +147,9 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, verbose_name="Ordered by", on_delete=models.PROTECT)
     
     # from which cart ??? seems illogical
+    
+    # def __str__(self):
+    #     pass
 
 
 
