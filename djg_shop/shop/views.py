@@ -7,5 +7,10 @@ from rest_framework.response import Response
 from .models import Order, OrderItem, Product, Customer
 
 @api_view()
-def product_list(request):
+def all_products(request):
     return Response('ok')
+
+
+@api_view()
+def product_detail(request,id):
+    return Response(id)
