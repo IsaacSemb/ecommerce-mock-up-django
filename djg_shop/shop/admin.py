@@ -1,5 +1,7 @@
 from django.contrib import admin
 from . import models
+from django.db.models.aggregates import Count
+
 
 admin_notes = """
 the admin file is for when you want to custromise 
@@ -32,7 +34,17 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = [ 'category_name', 'product_count' ]
+
+    @admin.display(ordering='counted_products')   
+    def product_count(self, category):
+        return category.counted_products # but this doesnt exist in the products so we have to create it
+    
+    def get_queryset(self, request):
+        return (
+            super().get_queryset(request)
+            .annotate( counted_products=Count('product'))
+            )
 
 
 # might sound like common sense but
