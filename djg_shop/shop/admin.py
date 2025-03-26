@@ -11,8 +11,14 @@ instead of seeing the Object(id)  you see the real name
 
 # Register your models here.
 
+
+# custom admin manipulation for the product admin page
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['product_name', 'unit_price']
+
+
 admin.site.register(models.Category)
 
 
-admin.site.register(models.Product)
+admin.site.register(models.Product, ProductAdmin)
 
