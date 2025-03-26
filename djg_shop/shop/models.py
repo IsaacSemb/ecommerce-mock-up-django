@@ -30,8 +30,12 @@ class Product(models.Model):
     category = models.ForeignKey('Category', verbose_name="Product Category", on_delete=models.PROTECT)
     slug = models.SlugField()
     
-    # category
-    # slug
+    def __str__(self):
+        return self.product_name
+    
+    class Meta:
+        ordering = ['product_name']
+        
 
 
 notes_product = """

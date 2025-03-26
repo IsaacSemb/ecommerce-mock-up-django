@@ -12,3 +12,7 @@ instead of seeing the Object(id)  you see the real name
 # Register your models here.
 
 admin.site.register(models.Category)
+
+
+admin.site.register(models.Product)
+
