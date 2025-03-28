@@ -1,1 +1,2 @@
-# ecommerce-mock-up-django
+# ecommerce-mock-up-django 
+
