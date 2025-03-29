@@ -22,6 +22,7 @@ def all_products(request):
     if request.method == 'POST':
         serializer = ProductSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response('ok')
 
 
@@ -48,10 +49,11 @@ def product_detail(request,id):
     return Response(data)
 
 @api_view()
-def category_detail(request, pk):
+def category_detail(request, pk): 
     return Response('ok')
     category = get_object_or_404(Category, pk=id)
     serializer = CategorySerializer(category)
     data = serializer.data
     
     return Response(data)
+

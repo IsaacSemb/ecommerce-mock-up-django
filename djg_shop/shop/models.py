@@ -30,7 +30,7 @@ class Product(models.Model):
     category = models.ForeignKey('Category', verbose_name="Product Category", on_delete=models.PROTECT)
     slug = models.SlugField()
     
-    def __str__(self):
+    def __str__(self): 
         return self.product_name
     
     class Meta:

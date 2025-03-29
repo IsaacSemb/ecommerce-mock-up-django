@@ -39,7 +39,7 @@ class ProductSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Product
-        fields = [ 'id', 'product_name', 'unit_price', 'category', 'price_with_tax' ]
+        fields = [ 'id', 'product_name', 'unit_price', 'category', 'price_with_tax', 'slug', 'inventory', 'product_description' ]
         
         # this is a bad practice so i hear
         # fields = '__all__' 
