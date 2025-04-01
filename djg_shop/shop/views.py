@@ -34,7 +34,7 @@ retrieve the object and pass it to the serializer
 
 """
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def product_detail(request,id):
     # get the product you want to work with 
     product = get_object_or_404(Product, pk=id)
@@ -45,11 +45,21 @@ def product_detail(request,id):
         # get the data from it and pass it and pass it as a response
         data = serializer.data
         return Response(data, status=status.HTTP_201_CREATED)
+    
     elif request.method == 'PUT':
         serializer = ProductSerializer(product, data = request.data, )
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    
+    elif request.method == 'DELETE':
+        
+        # check if it has order items associated with it
+        if product.orderitem_set.count()>0:
+            return Response(data={'error':'Product cant be deleted because it is associated to an order item'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
         
 
 @api_view()
