@@ -158,6 +158,6 @@ class OrderItem(models.Model):
     quantity = models.PositiveSmallIntegerField(verbose_name="Quantity of Items")
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     order = models.ForeignKey( Order, verbose_name="Which Order", on_delete=models.CASCADE )
-    product = models.ForeignKey( Product, verbose_name="Which product", on_delete=models.PROTECT )
+    product = models.ForeignKey( Product, verbose_name="Which product", on_delete=models.PROTECT, related_name='orderitems' )
 
 

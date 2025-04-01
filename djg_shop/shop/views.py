@@ -55,7 +55,7 @@ def product_detail(request,id):
     elif request.method == 'DELETE':
         
         # check if it has order items associated with it
-        if product.orderitem_set.count()>0:
+        if product.orderitems.count()>0:
             return Response(data={'error':'Product cant be deleted because it is associated to an order item'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     
         product.delete()
