@@ -74,5 +74,10 @@ class ProductSerializer(serializers.ModelSerializer):
     
     def calculate_tax(self, product:Product):
         return product.unit_price * Decimal(1.1)
+    
+    
+    # if you need to overwrite the validate function you can
+    # def validate(self, attrs):
+    #     return super().validate(attrs)
 
 
