@@ -13,7 +13,7 @@ from rest_framework.viewsets import ModelViewSet
 
 
 # personal imports
-from .models import Category, Product
+from .models import Category, OrderItem, Product
 from .serializers import ProductSerializer, CategorySerializer
 
 
@@ -28,6 +28,10 @@ class ProductViewSet(ModelViewSet):
     and the one that gets a single product
     """
     # both have getting a query set that is the same
+    
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    
     def get_queryset(self):
         return Product.objects.all()
     
@@ -39,7 +43,7 @@ class ProductViewSet(ModelViewSet):
     def get_serializer_context(self):
         return {'request':self.request}
     
-    def delete(self, request, pk):
+    def delete_old(self, request, pk):
         product = get_object_or_404(Product, pk=pk)
         
         # check if it has order items associated with it
@@ -48,6 +52,12 @@ class ProductViewSet(ModelViewSet):
     
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    def destroy(self, request, *args, **kwargs):
+        if OrderItem.objects.filter(product_id=kwargs['pk']).count()>0:
+            return Response(data={'error':'Product cant be deleted because it is associated to an order item'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        return super().destroy(request, *args, **kwargs)
 
 class CategoryViewSet(ModelViewSet):
     """
@@ -55,6 +65,10 @@ class CategoryViewSet(ModelViewSet):
     the one that get all Categories  
     and the one that gets a single Category
     """
+    
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    
     # both have getting a query set that is the same
     def get_queryset(self):
         
@@ -72,7 +86,7 @@ class CategoryViewSet(ModelViewSet):
     def get_serializer_context(self):
         return {'request':self.request}
     
-    def delete(self, request, pk):
+    def delete_old(self, request, pk):
         category = get_object_or_404(Category, pk=pk)
         
         # check if it has order items associated with it
@@ -81,6 +95,17 @@ class CategoryViewSet(ModelViewSet):
     
         category.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    def destroy(self, request, *args, **kwargs):
+        # check if it has order items associated with it
+        
+        category = get_object_or_404(Category, pk=kwargs['pk'])
+        
+        # check if it has order items associated with it
+        if category.product_category.count()>0:
+            return Response(data={'error':'Category cant be deleted because it is associated products'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+        return super().destroy(request, *args, **kwargs)
 
 
 
