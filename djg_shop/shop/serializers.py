@@ -17,9 +17,21 @@ you can include related models
 
 """
 
-class CategorySerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    category_name = serializers.CharField(max_length=255)
+class CategorySerializer(serializers.ModelSerializer):
+    # id = serializers.IntegerField()
+    # category_name = serializers.CharField(max_length=255)
+    
+    # product_counter = serializers.SerializerMethodField('get_product_count')
+    product_count = serializers.IntegerField()
+        
+    class Meta:
+        model = Category
+        fields = [ 'id', 'category_name', 'category_description','product_count'] #, 'product_counter' ]
+    
+    def get_product_count(self, category: Category ):
+        return category.product_category.count()
+        
+        
 
 class ProductSerializer(serializers.ModelSerializer):
     
