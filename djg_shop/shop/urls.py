@@ -1,4 +1,10 @@
+# django imports
 from django.urls import path
+
+# rest framework
+from rest_framework.routers import SimpleRouter
+
+# local
 from . import views
 
 urlpatterns = [

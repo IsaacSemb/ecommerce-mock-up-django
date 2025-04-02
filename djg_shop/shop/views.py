@@ -22,7 +22,65 @@ from .serializers import ProductSerializer, CategorySerializer
 # example the product and product details
 
 class ProductViewSet(ModelViewSet):
-    pass
+    """
+    this combines all products views  
+    the one that get all products  
+    and the one that gets a single product
+    """
+    # both have getting a query set that is the same
+    def get_queryset(self):
+        return Product.objects.all()
+    
+    # both use the product serializer class
+    def get_serializer_class(self):
+        return ProductSerializer
+    
+    # all need context
+    def get_serializer_context(self):
+        return {'request':self.request}
+    
+    def delete(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        
+        # check if it has order items associated with it
+        if product.orderitems.count()>0:
+            return Response(data={'error':'Product cant be deleted because it is associated to an order item'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class CategoryViewSet(ModelViewSet):
+    """
+    this combines all Categories views  
+    the one that get all Categories  
+    and the one that gets a single Category
+    """
+    # both have getting a query set that is the same
+    def get_queryset(self):
+        
+        qry_set = ( Category.objects
+        .annotate( product_count = Count('product_category'))
+        .all()
+        )
+        return qry_set
+    
+    # both use the Category serializer class
+    def get_serializer_class(self):
+        return CategorySerializer
+    
+    # all need context
+    def get_serializer_context(self):
+        return {'request':self.request}
+    
+    def delete(self, request, pk):
+        category = get_object_or_404(Category, pk=pk)
+        
+        # check if it has order items associated with it
+        if category.product_category.count()>0:
+            return Response(data={'error':'Category cant be deleted because it is associated products'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+        category.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
