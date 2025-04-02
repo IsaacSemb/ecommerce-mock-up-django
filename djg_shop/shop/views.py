@@ -3,6 +3,7 @@ from django.db.models.aggregates import Count, Avg, Max, Min, Sum
 from django.db.models import Value, F, Func
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework import status
 
 from .models import Category, Product
@@ -25,6 +26,26 @@ def all_products(request):
         serializer.save()
         return Response('ok')
 
+
+class AllProducts(APIView):
+    def get(self, request):
+        # logic from the get if statement
+        query_set = Product.objects.select_related('category').all()[:5]
+        serializer = ProductSerializer(
+            query_set, 
+            many=True, 
+            context={'request':request}
+            ) 
+        return Response(serializer.data)
+        
+    
+    def post(self, request):
+        # logic from the post if statement
+        serializer = ProductSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response('ok')
+    
 
 
 notes = """
