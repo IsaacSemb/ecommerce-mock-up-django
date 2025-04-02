@@ -137,8 +137,8 @@ class ProductDetails(RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     # lookup_field = 'id'
     
-    def delete(self, request, id):
-        product = get_object_or_404(Product, pk=id)
+    def delete(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
         
         # check if it has order items associated with it
         if product.orderitems.count()>0:
@@ -211,4 +211,18 @@ def category_detail(request, pk):
         category.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
-
+class CategoryDetail(RetrieveUpdateDestroyAPIView):
+    
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    # lookup_field = 'id'
+    
+    def delete(self, request, pk):
+        category = get_object_or_404(Category, pk=pk)
+        
+        # check if it has order items associated with it
+        if category.product_category.count()>0:
+            return Response(data={'error':'Category cant be deleted because it is associated products'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+        category.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
