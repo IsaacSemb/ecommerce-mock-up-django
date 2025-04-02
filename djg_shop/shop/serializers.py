@@ -22,7 +22,7 @@ class CategorySerializer(serializers.ModelSerializer):
     # category_name = serializers.CharField(max_length=255)
     
     # product_counter = serializers.SerializerMethodField('get_product_count')
-    product_count = serializers.IntegerField()
+    product_count = serializers.IntegerField(read_only=True)
         
     class Meta:
         model = Category

@@ -8,12 +8,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.mixins import ListModelMixin, CreateModelMixin 
-from rest_framework.generics import ListCreateAPIView 
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView 
 
 # personal imports
 from .models import Category, Product
 from .serializers import ProductSerializer, CategorySerializer
 
+# DEPRACATED
 @api_view(['GET','POST'])
 def all_products(request):
     
@@ -31,10 +32,9 @@ def all_products(request):
         serializer.save()
         return Response('ok')
 
-
-class AllProducts(APIView):
+# DEPRACATED
+class AllProducts_OLD(APIView):
     def get(self, request):
-        print("\n## here ##\n")
         # logic from the get if statement
         query_set = Product.objects.select_related('category').all()[:5]
         serializer = ProductSerializer(
@@ -51,7 +51,21 @@ class AllProducts(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response('ok')
+
+class AllProducts(ListCreateAPIView):
     
+    # overwrite the get queryset method for obtaining the queryset.. 
+    # ( we are told to never get the query set direct)
+    
+    def get_queryset(self):
+        return Product.objects.select_related('category').all()[:5]
+    
+    def get_serializer_class(self):
+        return ProductSerializer
+    
+    def get_serializer_context(self):
+        return {'request':self.request}
+
 
 
 notes = """
@@ -88,7 +102,7 @@ def product_details(request,id):
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class ProductDetails(APIView):
+class ProductDetails_OLD(APIView):
     
         
     def get(self, request, id):
@@ -117,9 +131,25 @@ class ProductDetails(APIView):
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class ProductDetails(RetrieveUpdateDestroyAPIView):
+    
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    # lookup_field = 'id'
+    
+    def delete(self, request, id):
+        product = get_object_or_404(Product, pk=id)
+        
+        # check if it has order items associated with it
+        if product.orderitems.count()>0:
+            return Response(data={'error':'Product cant be deleted because it is associated to an order item'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 @api_view(['GET','POST'])
-def category(request):
+def category_list(request):
     
     if request.method == 'GET':
         
@@ -140,6 +170,22 @@ def category(request):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class CategoryList(ListCreateAPIView):
+    
+    def get_queryset(self):
+        
+        qry_set = ( Category.objects
+        .annotate( product_count = Count('product_category'))
+        .all()
+        )
+        return qry_set
+    
+    def get_serializer_class(self):
+        return CategorySerializer
+    
+    def get_serializer_context(self):
+        return {'request': self.request}
     
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -164,4 +210,5 @@ def category_detail(request, pk):
             return Response(data={'error': "Category has products associated with it"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
         category.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
+
