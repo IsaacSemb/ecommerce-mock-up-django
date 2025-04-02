@@ -29,6 +29,7 @@ def all_products(request):
 
 class AllProducts(APIView):
     def get(self, request):
+        print("\n## here ##\n")
         # logic from the get if statement
         query_set = Product.objects.select_related('category').all()[:5]
         serializer = ProductSerializer(
