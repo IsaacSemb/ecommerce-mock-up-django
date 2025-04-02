@@ -9,10 +9,22 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.mixins import ListModelMixin, CreateModelMixin 
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView 
+from rest_framework.viewsets import ModelViewSet 
+
 
 # personal imports
 from .models import Category, Product
 from .serializers import ProductSerializer, CategorySerializer
+
+
+
+# combining multiple related views into a single view set
+# example the product and product details
+
+class ProductViewSet(ModelViewSet):
+    pass
+
+
 
 # DEPRACATED
 @api_view(['GET','POST'])
@@ -58,7 +70,7 @@ class AllProducts(ListCreateAPIView):
     # ( we are told to never get the query set direct)
     
     def get_queryset(self):
-        return Product.objects.select_related('category').all()[:5]
+        return Product.objects.all()
     
     def get_serializer_class(self):
         return ProductSerializer
@@ -131,7 +143,7 @@ class ProductDetails_OLD(APIView):
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class ProductDetails(RetrieveUpdateDestroyAPIView):
+class ProductDetail(RetrieveUpdateDestroyAPIView):
     
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
