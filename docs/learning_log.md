@@ -26,3 +26,10 @@ commiting using file name
 
 ### verbose name
 human readable name 
+
+
+### mixin
+If in a class you have a repeating pattern like functions and want to encapsulate and reuse it
+you can create a mixin class that has all this functionality
+then you can always inherit from this class and use its power 
+

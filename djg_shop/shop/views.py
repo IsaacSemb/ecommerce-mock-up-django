@@ -1,11 +1,16 @@
 from django.shortcuts import get_object_or_404
 from django.db.models.aggregates import Count, Avg, Max, Min, Sum
 from django.db.models import Value, F, Func
+
+# restframework
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework.mixins import ListModelMixin, CreateModelMixin 
+from rest_framework.generics import ListCreateAPIView 
 
+# personal imports
 from .models import Category, Product
 from .serializers import ProductSerializer, CategorySerializer
 
@@ -57,7 +62,7 @@ retrieve the object and pass it to the serializer
 """
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def product_detail(request,id):
+def product_details(request,id):
     # get the product you want to work with 
     product = get_object_or_404(Product, pk=id)
         
@@ -82,7 +87,37 @@ def product_detail(request,id):
     
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ProductDetails(APIView):
+    
         
+    def get(self, request, id):
+        # get the product you want to work with 
+        product = get_object_or_404(Product, pk=id)
+        # serialisze it using the responsible serializer
+        serializer = ProductSerializer(product)
+        # get the data from it and pass it and pass it as a response
+        data = serializer.data
+        return Response(data, status=status.HTTP_201_CREATED)
+    
+    def put(self, request, id):
+        product = get_object_or_404(Product, pk=id)
+        serializer = ProductSerializer(product, data = request.data, )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
+    def delete(self, request, id):
+        product = get_object_or_404(Product, pk=id)
+        
+        # check if it has order items associated with it
+        if product.orderitems.count()>0:
+            return Response(data={'error':'Product cant be deleted because it is associated to an order item'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 @api_view(['GET','POST'])
 def category(request):
     
