@@ -1,7 +1,7 @@
 from decimal import Decimal
 from rest_framework import serializers
 
-from .models import Product, Category
+from .models import Product, Category, Review
 
 
 notes = """
@@ -93,3 +93,8 @@ class ProductSerializer(serializers.ModelSerializer):
     #     return super().validate(attrs)
 
 
+class ReviewSerializer(serializers.Serializer):
+    class Meta:
+        model = Review
+        # fields = ['product', 'reviewer', 'description', 'date']
+        fields = '__all__'
