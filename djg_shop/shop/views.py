@@ -22,8 +22,10 @@ from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
 # example the product and product details
 
 class ReviewViewSet(ModelViewSet):
-    queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    
+    def get_queryset(self):
+        return Review.objects.filter(product_id = self.kwargs['product_pk'])
     
     def get_serializer_context(self):
         return { 'product_id' : self.kwargs['product_pk'] }
