@@ -161,3 +161,8 @@ class OrderItem(models.Model):
     product = models.ForeignKey( Product, verbose_name="Which product", on_delete=models.PROTECT, related_name='orderitems' )
 
 
+class Review(models.Model):
+    product = models.ForeignKey(Product,verbose_name='which order', on_delete=models.CASCADE, related_name='reviews')
+    reviewer = models.CharField(max_length=255)
+    description = models.TextField()
+    date = models.DateField(auto_now_add=True)
