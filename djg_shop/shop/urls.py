@@ -2,19 +2,31 @@
 from django.urls import include, path
 
 # rest framework
-from rest_framework.routers import SimpleRouter, DefaultRouter
+# from rest_framework.routers import SimpleRouter, DefaultRouter
+from rest_framework_nested import routers
 
 # local
 from . import views
 from pprint import pprint
 
-router = SimpleRouter()
-router = DefaultRouter()
+# router = SimpleRouter()
+# router = DefaultRouter() # overwrite the simple router
+router = routers.DefaultRouter() # overwrite the default router with the nested one
 
 router.register('products',views.ProductViewSet)
 router.register('category',views.CategoryViewSet)
 
-pprint(router.urls)
+products_router = routers.NestedDefaultRouter(
+    parent_router=router, 
+    parent_prefix='products',
+    lookup='product'
+    )
+
+products_router.register(
+    prefix='reviews',
+    viewset=views.ReviewViewSet,
+    basename='products-reviews'
+    )
 
 # urlpatterns = [
 #     # path('products/', views.all_products), # function view-----
@@ -26,10 +38,11 @@ pprint(router.urls)
 #     path('category/<int:pk>/', views.CategoryDetail.as_view())
 # ]
 
-# urlpatterns = router.urls
+# urlpatterns = router.urls + products_router.urls
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('', include(products_router.urls))
 ]
 
 

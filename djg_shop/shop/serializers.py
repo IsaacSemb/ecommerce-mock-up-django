@@ -93,7 +93,7 @@ class ProductSerializer(serializers.ModelSerializer):
     #     return super().validate(attrs)
 
 
-class ReviewSerializer(serializers.Serializer):
+class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         # fields = ['product', 'reviewer', 'description', 'date']
