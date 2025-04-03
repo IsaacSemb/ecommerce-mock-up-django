@@ -13,13 +13,19 @@ from rest_framework.viewsets import ModelViewSet
 
 
 # personal imports
-from .models import Category, OrderItem, Product
-from .serializers import ProductSerializer, CategorySerializer
+from .models import Category, OrderItem, Product, Review
+from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
 
 
 
 # combining multiple related views into a single view set
 # example the product and product details
+
+class ReviewViewSet(ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    
+    
 
 class ProductViewSet(ModelViewSet):
     """
