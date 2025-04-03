@@ -13,7 +13,7 @@ from pprint import pprint
 # router = DefaultRouter() # overwrite the simple router
 router = routers.DefaultRouter() # overwrite the default router with the nested one
 
-router.register('products',views.ProductViewSet)
+router.register('products',views.ProductViewSet, basename='products')
 router.register('category',views.CategoryViewSet)
 
 products_router = routers.NestedDefaultRouter(

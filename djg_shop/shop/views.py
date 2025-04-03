@@ -40,11 +40,18 @@ class ProductViewSet(ModelViewSet):
     """
     # both have getting a query set that is the same
     
-    queryset = Product.objects.all()
+    # queryset = Product.objects.all()
     serializer_class = ProductSerializer
     
     def get_queryset(self):
-        return Product.objects.all()
+        queryset = Product.objects.all()
+        
+        category_id = self.request.query_params.get('category_id')
+        
+        if category_id is not None:
+            queryset = queryset.filter(category_id=category_id)
+        
+        return queryset
     
     # both use the product serializer class
     def get_serializer_class(self):
