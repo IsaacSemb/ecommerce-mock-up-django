@@ -52,7 +52,7 @@ class ProductViewSet(ModelViewSet):
     # filterset_fields = ['category_id', 'unit_price']
     filterset_class = ProductFilter 
     search_fields = ['product_name', 'product_description']
-    pagination_class = PageNumberPagination
+    # pagination_class = PageNumberPagination
     
     def get_queryset(self):
         return Product.objects.all()
