@@ -18,9 +18,12 @@ you can include related models
 """
 
 class CartSerializer(serializers.ModelSerializer):
+    
+    id = serializers.UUIDField(read_only=True)
+
     class Meta:
         model = Cart
-        fields = [ 'id', 'created_at' ]
+        fields = [ 'id', 'items' ]
         
 class CategorySerializer(serializers.ModelSerializer):
     # id = serializers.IntegerField()

@@ -28,6 +28,9 @@ products_router.register(
     basename='products-reviews'
     )
 
+# carts
+router.register('carts',views.CartViewSet)
+
 # urlpatterns = [
 #     # path('products/', views.all_products), # function view-----
 #     path('products/', views.AllProducts.as_view()), # class view 

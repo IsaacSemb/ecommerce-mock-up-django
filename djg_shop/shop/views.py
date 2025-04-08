@@ -12,10 +12,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView 
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.filters import SearchFilter
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, ListModelMixin
 
 
 # personal imports
@@ -27,18 +28,15 @@ from .pagination import DefaultPagination
 # combining multiple related views into a single view set
 # example the product and product details
 
-class CartViewSet(ModelViewSet):
+class CartViewSet(
+    CreateModelMixin, 
+    GenericViewSet, 
+    RetrieveModelMixin, # this retrieves one
+    ListModelMixin # this list all of them
+    ):
+    queryset =  Cart.objects.all()
     serializer_class = CartSerializer
     
-    def get_queryset(self):
-        return Cart.objects.all()
-    
-    def get_serializer_class(self):
-        return CartSerializer
-    
-    def get_serializer_context(self):
-        return {'request':self.request}
-
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
@@ -48,8 +46,6 @@ class ReviewViewSet(ModelViewSet):
     
     def get_serializer_context(self):
         return { 'product_id' : self.kwargs['product_pk'] }
-    
-    
 
 class ProductViewSet(ModelViewSet):
     """
