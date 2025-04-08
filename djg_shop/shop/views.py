@@ -19,13 +19,26 @@ from rest_framework.pagination import PageNumberPagination
 
 
 # personal imports
-from .models import Category, OrderItem, Product, Review
-from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
+from .models import Cart, Category, OrderItem, Product, Review
+from .serializers import CartSerializer, ProductSerializer, CategorySerializer, ReviewSerializer
 from .filters import ProductFilter
 from .pagination import DefaultPagination
 
 # combining multiple related views into a single view set
 # example the product and product details
+
+class CartViewSet(ModelViewSet):
+    serializer_class = CartSerializer
+    
+    def get_queryset(self):
+        return Cart.objects.all()
+    
+    def get_serializer_class(self):
+        return CartSerializer
+    
+    def get_serializer_context(self):
+        return {'request':self.request}
+
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
