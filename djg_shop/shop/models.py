@@ -1,3 +1,4 @@
+from uuid import uuid4
 from django.db import models
 
 # Create your models here.
@@ -115,15 +116,17 @@ class Address(models.Model):
 
 
 class Cart(models.Model):
+    cart_id = models.UUIDField(verbose_name='Cart ID', primary_key=True, default=uuid4)
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
-    customer = models.OneToOneField( Customer, verbose_name="Cart Owner", on_delete=models.CASCADE, primary_key=True)
+    # customer = models.OneToOneField( Customer, verbose_name="Cart Owner", on_delete=models.CASCADE, primary_key=True)
 
 
 class CartItem(models.Model):
-    quantity = models.PositiveSmallIntegerField(verbose_name="Quantity of Items")
+    quantity = models.PositiveSmallIntegerField(verbose_name="Quantity of all Items")
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     cart = models.ForeignKey(Cart, verbose_name="which Cart", on_delete=models.CASCADE)
     product = models.OneToOneField(Product, verbose_name="which product", on_delete=models.CASCADE)
+    cart_item_description = models.TextField(verbose_name= "Cart Item Description", null=True)
 
     # price at time -- pricess keep change?? --- on order item
 

@@ -44,7 +44,7 @@ class ProductViewSet(ModelViewSet):
     the one that get all products  
     and the one that gets a single product
     """
-    # both have getting a query set that is the same
+    # both have getting a query set that is the same 
     
     # queryset = Product.objects.all()
     serializer_class = ProductSerializer
