@@ -1,7 +1,7 @@
 from decimal import Decimal
 from rest_framework import serializers
 
-from .models import Product, Category, Review
+from .models import Cart, Product, Category, Review
 
 
 notes = """
@@ -17,6 +17,11 @@ you can include related models
 
 """
 
+class CartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = [ 'id', 'created_at' ]
+        
 class CategorySerializer(serializers.ModelSerializer):
     # id = serializers.IntegerField()
     # category_name = serializers.CharField(max_length=255)
