@@ -1,7 +1,6 @@
 # django apps
 from django.shortcuts import get_object_or_404
-from django.db.models.aggregates import Count, Avg, Max, Min, Sum
-from django.db.models import Value, F, Func
+from django.db.models.aggregates import Count 
 
 # django filter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -11,9 +10,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.mixins import ListModelMixin, CreateModelMixin 
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView 
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.filters import SearchFilter
 
 
 
@@ -47,9 +46,10 @@ class ProductViewSet(ModelViewSet):
     
     # queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
     # filterset_fields = ['category_id', 'unit_price']
     filterset_class = ProductFilter
+    search_fields = ['product_name', 'product_description']
     
     def get_queryset(self):
         return Product.objects.all()
