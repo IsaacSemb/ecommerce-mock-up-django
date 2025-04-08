@@ -20,7 +20,7 @@ from rest_framework.viewsets import ModelViewSet
 # personal imports
 from .models import Category, OrderItem, Product, Review
 from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
-
+from .filters import ProductFilter
 
 
 # combining multiple related views into a single view set
@@ -48,7 +48,8 @@ class ProductViewSet(ModelViewSet):
     # queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['category_id']
+    # filterset_fields = ['category_id', 'unit_price']
+    filterset_class = ProductFilter
     
     def get_queryset(self):
         return Product.objects.all()
