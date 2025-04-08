@@ -5,6 +5,7 @@ from django.db.models.aggregates import Count
 # django filter
 from django_filters.rest_framework import DjangoFilterBackend
 
+
 # restframework
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -14,7 +15,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter
 from rest_framework.filters import OrderingFilter
-
+from rest_framework.pagination import PageNumberPagination
 
 
 # personal imports
@@ -51,6 +52,7 @@ class ProductViewSet(ModelViewSet):
     # filterset_fields = ['category_id', 'unit_price']
     filterset_class = ProductFilter 
     search_fields = ['product_name', 'product_description']
+    pagination_class = PageNumberPagination
     
     def get_queryset(self):
         return Product.objects.all()
