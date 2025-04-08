@@ -13,6 +13,7 @@ from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter
+from rest_framework.filters import OrderingFilter
 
 
 
@@ -46,9 +47,9 @@ class ProductViewSet(ModelViewSet):
     
     # queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     # filterset_fields = ['category_id', 'unit_price']
-    filterset_class = ProductFilter
+    filterset_class = ProductFilter 
     search_fields = ['product_name', 'product_description']
     
     def get_queryset(self):
