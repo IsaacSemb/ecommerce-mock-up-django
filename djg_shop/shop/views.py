@@ -34,7 +34,7 @@ class CartViewSet(
     RetrieveModelMixin, # this retrieves one
     ListModelMixin # this list all of them
     ):
-    queryset =  Cart.objects.all()
+    queryset =  Cart.objects.prefetch_related('items__product').all()
     serializer_class = CartSerializer
     
 
