@@ -17,19 +17,7 @@ you can include related models
 
 """
 
-class cartItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = ['id', 'product', 'quantity']
 
-class CartSerializer(serializers.ModelSerializer):
-    
-    id = serializers.UUIDField(read_only=True)
-    items = cartItemSerializer(many=True)
-    
-    class Meta:
-        model = Cart
-        fields = [ 'id', 'items' ]
 
 
 
@@ -119,3 +107,26 @@ class ReviewSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         product_id = self.context['product_id']
         return Review.objects.create(product_id=product_id, **validated_data)
+
+
+class SimpleProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['product_name', 'product_description', 'unit_price', 'inventory', 'category']
+    
+class cartItemSerializer(serializers.ModelSerializer): 
+    
+    product = SimpleProductSerializer()
+    
+    class Meta:
+        model = CartItem
+        fields = ['id', 'product', 'quantity']
+
+class CartSerializer(serializers.ModelSerializer):
+    
+    id = serializers.UUIDField(read_only=True)
+    items = cartItemSerializer(many=True)
+    
+    class Meta:
+        model = Cart
+        fields = [ 'id', 'items' ]
