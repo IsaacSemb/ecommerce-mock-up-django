@@ -21,7 +21,7 @@ from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, ListMode
 
 # personal imports
 from .models import Cart, CartItem, Category, OrderItem, Product, Review
-from .serializers import CartSerializer, AddCartItemSerializer, ProductSerializer, CategorySerializer, ReviewSerializer, CartItemSerializer
+from .serializers import CartSerializer, AddCartItemSerializer, ProductSerializer, CategorySerializer, ReviewSerializer, CartItemSerializer, UpdateCartItemSerializer
 from .filters import ProductFilter
 from .pagination import DefaultPagination
 
@@ -30,13 +30,20 @@ from .pagination import DefaultPagination
 
 class CartItemViewSet( ModelViewSet ):
     
+    # Restricting to these methods for CRUD operations on CartItem
+    http_method_names = ['get', 'post', 'patch', 'delete']
+    
     serializer_class = CartItemSerializer
     
     def get_queryset(self):
         return CartItem.objects.filter(cart_id = self.kwargs['cart_pk']).select_related('product')
     
     def get_serializer_class(self):
-        return AddCartItemSerializer if self.request.method == 'POST' else CartItemSerializer
+        if self.request.method == 'POST':
+            return AddCartItemSerializer
+        elif self.request.method == 'PATCH':
+            return UpdateCartItemSerializer 
+        return CartItemSerializer
     
     def get_serializer_context(self):
         return {'cart_id':self.kwargs['cart_pk']}
@@ -61,7 +68,7 @@ class ReviewViewSet(ModelViewSet):
     def get_serializer_context(self):
         return { 'product_id' : self.kwargs['product_pk'] }
 
-class ProductViewSet(ModelViewSet):
+class ProductViewSet(ModelViewSet): 
     """
     this combines all products views  
     the one that get all products  
