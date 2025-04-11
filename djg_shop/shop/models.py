@@ -174,6 +174,11 @@ class Order(models.Model):
     
     # def __str__(self):
     #     pass
+    
+    class Meta:
+        permissions = [
+            ('cancel_order', 'can cancel an order')
+        ]
 
 
 
