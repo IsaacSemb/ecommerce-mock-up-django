@@ -76,6 +76,7 @@ class ProductViewSet(ModelViewSet):
     """
     # both have getting a query set that is the same 
     
+    
     # queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
