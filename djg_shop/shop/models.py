@@ -1,6 +1,8 @@
 from uuid import uuid4
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.conf import settings
+from django.contrib import admin
 
 # Create your models here.
 
@@ -57,19 +59,31 @@ class Customer(models.Model):
         (MEMBERSHIP_PREMIUM, 'Premium')
     ]
     
-    first_name = models.CharField(verbose_name="First Name", max_length=255) 
-    last_name = models.CharField(verbose_name="Last Name", max_length=255) 
+    # these have been added in the user app model
+    # first_name = models.CharField(verbose_name="First Name", max_length=255) 
+    # last_name = models.CharField(verbose_name="Last Name", max_length=255) 
+    # email = models.EmailField(verbose_name='Customer Email Address', max_length=255, unique=True)
+    
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     phone = models.CharField(verbose_name="Phone Number", max_length=20)
-    email = models.EmailField(verbose_name='Customer Email Address', max_length=255, unique=True)
     date_of_birth = models.DateField(verbose_name="Date of Birth", null=True)
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     membership = models.CharField(verbose_name="Membership Tier", max_length=1, choices=MEMBERSHIP_TIERS, default=MEMBERSHIP_BASIC)
     
+    @admin.display(ordering='user__first_name')
+    def first_name(self):
+        return self.user.first_name
+    
+    @admin.display(ordering='user__last_name')
+    def last_name(self):
+        return self.user.last_name
+        
+    
     def __str__(self):
-        return self.first_name + ' ' + self.last_name
+        return self.user.first_name + ' ' + self.user.last_name
     
     class Meta:
-        ordering = [ 'first_name', 'last_name']
+        ordering = [ 'user__first_name', 'user__last_name']
 
 
 
@@ -154,6 +168,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     payment_status = models.CharField(verbose_name="payment status",max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_PENDING)
     customer = models.ForeignKey(Customer, verbose_name="Ordered by", on_delete=models.PROTECT)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     
     # from which cart ??? seems illogical
     

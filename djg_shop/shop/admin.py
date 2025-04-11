@@ -54,7 +54,9 @@ class CategoryAdmin(admin.ModelAdmin):
 class CustomerAdmin(admin.ModelAdmin):
     list_display = [ 'first_name', 'last_name', 'phone', 'date_of_birth', 'membership']
     list_editable = ['membership']
-    list_per_page = 10 
+    list_select_related = ['user']
+    list_per_page = 10
+    ordering = [ 'user__first_name', 'user__last_name']
 
 
 @admin.register(models.Order)
