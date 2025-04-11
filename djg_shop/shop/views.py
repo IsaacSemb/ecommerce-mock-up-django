@@ -16,7 +16,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.filters import SearchFilter
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, ListModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, ListModelMixin, DestroyModelMixin
 
 
 # personal imports
@@ -32,7 +32,8 @@ class CartViewSet(
     CreateModelMixin, 
     GenericViewSet, 
     RetrieveModelMixin, # this retrieves one
-    ListModelMixin # this list all of them
+    ListModelMixin, # this list all of them
+    DestroyModelMixin # to delete
     ):
     queryset =  Cart.objects.prefetch_related('items__product').all()
     serializer_class = CartSerializer
