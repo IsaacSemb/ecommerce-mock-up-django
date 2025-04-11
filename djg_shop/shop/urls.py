@@ -31,6 +31,19 @@ products_router.register(
 # carts
 router.register('carts',views.CartViewSet)
 
+# created a nested router to do cart items
+cart_router = routers.NestedDefaultRouter(
+    parent_router=router, 
+    parent_prefix='carts',
+    lookup='cart'
+    )
+
+cart_router.register(
+    prefix='items',
+    viewset=views.CartItemViewSet,
+    basename='cart-items'
+    )
+
 # urlpatterns = [
 #     # path('products/', views.all_products), # function view-----
 #     path('products/', views.AllProducts.as_view()), # class view 
@@ -45,7 +58,8 @@ router.register('carts',views.CartViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('', include(products_router.urls))
+    path('', include(products_router.urls)),
+    path('', include(cart_router.urls))
 ]
 
 

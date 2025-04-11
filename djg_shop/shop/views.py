@@ -20,13 +20,29 @@ from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, ListMode
 
 
 # personal imports
-from .models import Cart, Category, OrderItem, Product, Review
-from .serializers import CartSerializer, ProductSerializer, CategorySerializer, ReviewSerializer
+from .models import Cart, CartItem, Category, OrderItem, Product, Review
+from .serializers import CartSerializer, ProductSerializer, CategorySerializer, ReviewSerializer, cartItemSerializer
 from .filters import ProductFilter
 from .pagination import DefaultPagination
 
 # combining multiple related views into a single view set
 # example the product and product details
+
+class CartItemViewSet1( CreateModelMixin,
+                        GenericViewSet,
+                        RetrieveModelMixin, # this retrieves one
+                        ListModelMixin, # this list all of them
+                        DestroyModelMixin # to delete
+                        ):
+    pass
+
+class CartItemViewSet( ModelViewSet ):
+    
+    serializer_class = cartItemSerializer
+    
+    def get_queryset(self):
+        return CartItem.objects.filter(cart_id = self.kwargs['cart_pk'])
+    
 
 class CartViewSet(
     CreateModelMixin, 
@@ -37,7 +53,7 @@ class CartViewSet(
     ):
     queryset =  Cart.objects.prefetch_related('items__product').all()
     serializer_class = CartSerializer
-    
+
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
