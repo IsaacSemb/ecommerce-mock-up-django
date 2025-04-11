@@ -43,7 +43,7 @@ class CategoryAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return (
             super().get_queryset(request)
-            .annotate( counted_products=Count('product'))
+            .annotate( counted_products=Count('product_category'))
             )
 
 
