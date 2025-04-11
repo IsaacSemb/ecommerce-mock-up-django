@@ -1,5 +1,6 @@
 from uuid import uuid4
 from django.db import models
+from django.core.validators import MinValueValidator
 
 # Create your models here.
 
@@ -122,7 +123,7 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
-    quantity = models.PositiveSmallIntegerField(verbose_name="Quantity of all Items")
+    quantity = models.PositiveSmallIntegerField(verbose_name="Quantity of all Items", validators=[MinValueValidator(1)])
     created_at = models.DateTimeField(verbose_name="date and time created", auto_now_add=True)
     cart = models.ForeignKey(Cart, verbose_name="which Cart", on_delete=models.CASCADE, related_name='items')
     product = models.OneToOneField(Product, verbose_name="which product", on_delete=models.CASCADE)
