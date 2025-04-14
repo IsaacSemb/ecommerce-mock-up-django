@@ -16,17 +16,25 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.filters import SearchFilter
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, ListModelMixin, DestroyModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, ListModelMixin, DestroyModelMixin, UpdateModelMixin
 
 
 # personal imports
-from .models import Cart, CartItem, Category, OrderItem, Product, Review
-from .serializers import CartSerializer, AddCartItemSerializer, ProductSerializer, CategorySerializer, ReviewSerializer, CartItemSerializer, UpdateCartItemSerializer
+from .models import Cart, CartItem, Category, Customer, OrderItem, Product, Review
+from .serializers import CartSerializer, AddCartItemSerializer, CustomerSerializer, ProductSerializer, CategorySerializer, ReviewSerializer, CartItemSerializer, UpdateCartItemSerializer
 from .filters import ProductFilter
 from .pagination import DefaultPagination
 
 # combining multiple related views into a single view set
 # example the product and product details
+
+class CustomerViewSet( GenericViewSet,
+                      CreateModelMixin, 
+                      RetrieveModelMixin, 
+                      UpdateModelMixin ):
+    
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer 
 
 class CartItemViewSet( ModelViewSet ):
     

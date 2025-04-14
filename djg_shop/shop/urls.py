@@ -15,6 +15,7 @@ router = routers.DefaultRouter() # overwrite the default router with the nested 
 
 router.register('products',views.ProductViewSet, basename='products')
 router.register('category',views.CategoryViewSet)
+router.register('customers',views.CustomerViewSet)
 
 products_router = routers.NestedDefaultRouter(
     parent_router=router, 
