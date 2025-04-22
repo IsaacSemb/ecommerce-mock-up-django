@@ -8,6 +8,7 @@ __pycache__
 # personal files
 commit_msg.txt
 TESTS.txt
+users.json
 
 # database dummy data
 database_data
